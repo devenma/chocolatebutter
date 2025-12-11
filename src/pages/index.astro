@@ -1,11 +1,106 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import "../styles/global.css";
+import { Image } from "astro:assets";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const streamingPlatforms = await getCollection("streamingPlatforms");
+
+const spotifyArtistLinks = await getCollection("spotifyArtistLinks");
+
+const purrpleCatSpotify = spotifyArtistLinks.find(
+  (artist) => artist.slug === "purrplecat"
+);
+
+const teamAstroSpotify = spotifyArtistLinks.find(
+  (artist) => artist.slug === "teamastro"
+);
+
+const casiooSpotify = spotifyArtistLinks.find(
+  (artist) => artist.slug === "casiio"
+);
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="ChocolateButter">
+  <main
+    class="max-w-xl bg-neutral-800/50 border m-auto border-white/10 p-6 rounded-3xl backdrop-blur-lg"
+  >
+    <div class="flex gap-8 items-center justify-center">
+      <Image
+        src="/ChocolateButter.jpg"
+        alt="ChocolateButter Logo"
+        class="rounded-full shadow-lg"
+        width={96}
+        height={96}
+      />
+      <h1 class="text-3xl font-bold">ChocolateButter</h1>
+    </div>
+    <article
+      class="mt-4 text-base sm:text-lg w-full bg-linear-to-br from-purple-600/10 to-fuchsia-600/10 border border-purple-500/40 p-4 rounded-lg"
+    >
+      <p>
+        Hi! I'm ChocolateButter, just a web developer that try to be a lofi
+        artist in my free time. I'm very inspired by artist like
+        <a href={purrpleCatSpotify?.data.url} target="_blank"
+          >{purrpleCatSpotify?.data.title}</a
+        >, <a href={teamAstroSpotify?.data.url} target="_blank"
+          >{teamAstroSpotify?.data.title}</a
+        > and <a href={casiooSpotify?.data.url} target="_blank"
+          >{casiooSpotify?.data.title}</a
+        >.
+      </p>
+      <p>
+        I'm trying to express my deepest feelings in my beats, hope you like it.
+        Thank's for passed here, really apreciate it.
+      </p>
+      <span class="block w-full text-right">~ eating chocolate 🍫 ~</span>
+    </article>
+
+    <section class="mt-8">
+      <ul class="list-disc list-inside">
+        {
+          streamingPlatforms.map((platform) => {
+            const { slug, data } = platform;
+            const { title, url, img } = data;
+
+            return (
+              <a
+                href={url}
+                target="_blank"
+                class="w-full justify-center not-hover:text-white shadow-sm relative flex items-center px-4 py-3 mb-3 bg-neutral-900/20 border border-white/10 rounded-2xl hover:bg-neutral-950/50 cursor-pointer transition"
+              >
+                <Image
+                  src={img}
+                  alt={title}
+                  class="absolute inline-block left-4"
+                  width={32}
+                  height={32}
+                />
+                <span class="text-lg font-medium">{title}</span>
+              </a>
+            );
+          })
+        }
+      </ul>
+    </section>
+
+    <section class="mt-8">
+      <ul class="list-inside">
+        <li class="w-full justify-center flex items-center gap-4 mb-4">
+          <a
+            href="https://www.instagram.com/chocolatebutter.music/"
+            target="_blank"
+            class="hover:scale-105 transition-transform"
+            ><Image
+              class="inline-block"
+              src="/Instagram_Icon.svg"
+              alt="Instagram"
+              width={32}
+              height={32}
+            /></a
+          >
+        </li>
+      </ul>
+    </section>
+  </main>
 </Layout>
