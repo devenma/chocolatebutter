@@ -1,58 +1,39 @@
 @import "tailwindcss";
 
+@theme {
+  --animate-cb-gradient-move: cb-gradient-move 20s ease infinite;
+
+  @keyframes cb-gradient-move {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+}
+
 @layer base {
   p {
-    @apply mb-4 leading-relaxed text-neutral-200;
+    @apply mb-2 leading-relaxed text-neutral-200;
   }
 
   a {
     @apply text-purple-400 hover:text-purple-600 transition-colors duration-200;
+    .streaming-platform-icon {
+      @apply absolute inline-block left-4 text-indigo-400/60;
+    }
+    &:hover {
+      .streaming-platform-icon {
+        @apply text-indigo-600/80;
+      }
+    }
   }
-}
 
-/* Animated gradient background applied via body::before to avoid affecting content */
-@keyframes cb-gradient-move {
-  0% {
-    background-position: 0% 50%;
+  svg {
+    @apply inline-block align-middle fill-current transition-colors duration-200 text-shadow-sm size-8;
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(
-    135deg,
-    #0f172a 0%,
-    #1e293b 25%,
-    #7c3aed 50%,
-    #1e293b 75%,
-    #0f172a 100%
-  );
-  background-size: 200% 200%;
-  opacity: 0.2;
-  animation: cb-gradient-move 16s ease-in-out infinite;
-  filter: blur(32px) saturate(120%);
-}
-
-/* Optional: subtle overlay to increase contrast for text */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  opacity: 0.2;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 0.2) 0%,
-    rgba(0, 0, 0, 0.6) 60%,
-    rgba(0, 0, 0, 0.85) 100%
-  );
 }

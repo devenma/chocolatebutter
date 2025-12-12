@@ -1,3 +1,8 @@
+---
+import BackgroundOverlay from "../components/BackgroundOverlay.astro";
+import "../styles/global.css";
+---
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -7,20 +12,10 @@
     <meta name="generator" content={Astro.generator} />
     <title>ChocolateButter</title>
   </head>
-  <body>
-    <div>
+  <body class="grid place-content-center font-sans bg-neutral-950 text-white">
+    <BackgroundOverlay />
+    <div class="container py-16 px-1">
       <slot />
     </div>
   </body>
 </html>
-
-<style>
-  @reference "../styles/global.css";
-  body {
-    @apply grid place-content-center font-sans bg-neutral-950 text-white;
-  }
-
-  body > div {
-    @apply container py-16 px-1;
-  }
-</style>

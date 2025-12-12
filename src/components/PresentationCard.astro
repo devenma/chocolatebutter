@@ -1,0 +1,30 @@
+---
+import { getCollection } from "astro:content";
+
+const spotifyArtistLinks = await getCollection("spotifyArtistLinks");
+
+const artistLinksHTML = spotifyArtistLinks
+  .map((artist, index) => {
+    const { data } = artist;
+    const { title, url } = data;
+    let separator = index < spotifyArtistLinks.length - 1 ? ", " : ".";
+    separator = index === spotifyArtistLinks.length - 2 ? " and " : separator;
+    return `<a class="inline-block font-semibold" href="${url}" target="_blank">${title}</a>${separator}`;
+  })
+  .join("");
+---
+
+<article
+  class="mt-4 text-base sm:text-lg w-full bg-linear-to-br from-purple-600/5 to-fuchsia-600/5 border border-purple-500/30 p-4 shadow-md rounded-lg"
+>
+  <p>Hi! I'm ChocolateButter.</p>
+  <p>
+    Just a web developer that try to be a lofi artist in my free time. I'm very
+    inspired by artist like <Fragment set:html={artistLinksHTML} />
+  </p>
+  <p>
+    I'm trying to express my deepest feelings in my beats, hope you like it.
+    Thank's for passed here, really apreciate it.
+  </p>
+  <span class="block w-full text-right">~ eating chocolate 🍫 ~</span>
+</article>

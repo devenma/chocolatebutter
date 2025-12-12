@@ -1,0 +1,26 @@
+---
+import { Image } from "astro:assets";
+import PresentationCard from "../components/PresentationCard.astro";
+import StreamingPlatformsLinks from "../components/StreamingPlatformsLinks.astro";
+---
+
+<main
+  class="max-w-xl bg-neutral-800/20 border m-auto border-white/10 p-6 rounded-3xl backdrop-blur-lg"
+>
+  <div class="flex gap-8 items-center justify-center">
+    <Image
+      src="/ChocolateButter.jpg"
+      alt="ChocolateButter Logo"
+      class="rounded-full shadow-lg"
+      width={64}
+      height={64}
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
+    <h1 class="text-2xl font-bold">ChocolateButter</h1>
+  </div>
+
+  <PresentationCard />
+  <StreamingPlatformsLinks />
+</main>

@@ -20,4 +20,20 @@ const spotifyArtistLinks = defineCollection({
   }),
 });
 
-export const collections = { streamingPlatforms, spotifyArtistLinks };
+const socialLinks = defineCollection({
+  type: "content",
+  schema: z.object({
+    url: z.string().url(),
+    img: z.string(),
+    title: z.string(),
+    alt: z.string(),
+    width: z.number(),
+    height: z.number(),
+  }),
+});
+
+export const collections = {
+  streamingPlatforms,
+  spotifyArtistLinks,
+  socialLinks,
+};
