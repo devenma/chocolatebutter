@@ -4,26 +4,28 @@ const socialLinks = await getCollection("socialLinks");
 import { getSvgContent } from "../utils/svgLoader.js";
 ---
 
-<ul class="list-inside w-full justify-center flex items-center gap-8 mb-4">
+<ul class="w-full justify-center flex items-center gap-8 mb-4">
   {
     socialLinks.map((link) => {
       const { data } = link;
       const { url, img, title, alt, width, height } = data;
 
       return (
-        <a
-          href={url}
-          target="_blank"
-          title={title}
-          class="hover:scale-110 transition-transform max-sm:border max-sm:border-purple-500/10 max-sm:p-2 max-sm:rounded-lg max-sm:bg-purple-900/10 max-sm:backdrop-blur-lg flex items-center gap-2"
-        >
-          {img ? (
-            <div set:html={getSvgContent(img)} class="inline-block" />
-          ) : (
-            <span class="text-2xl">🔗</span>
-          )}
-          <span class="text-sm font-semibold max-sm:hidden">{alt}</span>
-        </a>
+        <li>
+          <a
+            href={url}
+            target="_blank"
+            title={title}
+            class="hover:scale-110 transition-transform max-sm:border max-sm:border-purple-500/10 max-sm:p-2 max-sm:rounded-lg max-sm:bg-purple-900/10 max-sm:backdrop-blur-lg flex items-center gap-2"
+          >
+            {img ? (
+              <div set:html={getSvgContent(img)} class="inline-block" />
+            ) : (
+              <span class="text-2xl">🔗</span>
+            )}
+            <span class="text-sm font-semibold max-sm:hidden">{alt}</span>
+          </a>
+        </li>
       );
     })
   }
