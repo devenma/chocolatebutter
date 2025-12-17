@@ -16,10 +16,7 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [tailwindcss()],
-    ssr: {
-      external: ['qs']
-    }
+    plugins: [tailwindcss()]
   },
 
   adapter: deno()
