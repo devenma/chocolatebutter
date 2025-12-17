@@ -9,6 +9,12 @@ import deno from '@astrojs/deno';
 export default defineConfig({
   output: 'server',
 
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/noop'
+    }
+  },
+
   vite: {
     plugins: [tailwindcss()],
     ssr: {
