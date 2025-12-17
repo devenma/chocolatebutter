@@ -1,8 +1,19 @@
 ---
-import { getStrapiData, getStreamingPlatforms } from "../utils/strapi";
+import { getStreamingPlatforms } from "../utils/strapi";
 import svgLoader from "../utils/svgLoader.js";
 import { getCollection } from "astro:content";
-const BASE_URL = process.env.STRAPI_BASE_URL || "http://localhost:1337";
+
+// Compatible con desarrollo y Deno
+const getEnv = (key: string, defaultValue: string = ""): string => {
+  // @ts-expect-error - Deno is available in Deno runtime
+  if (typeof Deno !== "undefined") {
+    // @ts-expect-error - Deno.env is available in Deno runtime
+    return Deno.env.get(key) || defaultValue;
+  }
+  return (import.meta.env as Record<string, string>)[key] || defaultValue;
+};
+
+const BASE_URL = getEnv("PUBLIC_STRAPI_API_URL", "http://localhost:1337");
 
 // Obtener datos desde Strapi
 const strapiData = await getStreamingPlatforms();
@@ -20,7 +31,7 @@ export const prerender = false;
         const title =
           platform.title || platform.data.title || "Unknown Platform";
         const url = platform.url || platform.data.url || "#";
-        const icon = platform.icon.url || platform.data.icon || null;
+        const icon = platform?.icon?.url || platform.data.icon || null;
 
         const svgContent = icon
           ? svgLoader.getSvgContentFromStrapi(BASE_URL + icon) ||

@@ -1,6 +1,19 @@
-const BASE_URL = process.env.STRAPI_BASE_URL || "http://localhost:1337";
+// @ts-expect-error - qs is a valid import
 import qs from "qs";
 
+// Compatible con desarrollo (import.meta.env) y Deno (Deno.env.get)
+const getEnv = (key: string, defaultValue: string = ""): string => {
+  // @ts-expect-error - Deno is available in Deno runtime
+  if (typeof Deno !== "undefined") {
+    // @ts-expect-error - Deno.env is available in Deno runtime
+    return Deno.env.get(key) || defaultValue;
+  }
+  return (import.meta.env as Record<string, string>)[key] || defaultValue;
+};
+
+const BASE_URL = getEnv("PUBLIC_STRAPI_API_URL", "http://localhost:1337");
+
+const STRAPI_API_TOKEN = getEnv("STRAPI_API_TOKEN", "");
 const STREAMING_PLATFORMS_QUERY = {
   populate: {
     icon: {
@@ -16,7 +29,15 @@ export async function getStreamingPlatforms() {
 
 export async function getStrapiData(endpoint: string) {
   try {
-    const response = await fetch(`${BASE_URL}/${endpoint}`);
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+
+    if (STRAPI_API_TOKEN) {
+      headers.Authorization = `Bearer ${STRAPI_API_TOKEN}`;
+    }
+
+    const response = await fetch(`${BASE_URL}/${endpoint}`, { headers });
     if (!response.ok) {
       throw new Error(
         `Failed to fetch data from Strapi: ${response.statusText}`
