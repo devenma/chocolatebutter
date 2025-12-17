@@ -10,3 +10,18 @@ export function getSvgContent(imagePath: string) {
     return null;
   }
 }
+
+export async function getSvgContentFromStrapi(url: string) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch SVG from URL: ${url}`);
+    }
+    return await response.text();
+  } catch (error) {
+    console.error(`Error loading SVG from URL: ${url}`, error);
+    return null;
+  }
+}
+
+export default { getSvgContent, getSvgContentFromStrapi };

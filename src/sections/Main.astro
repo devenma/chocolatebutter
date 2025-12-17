@@ -2,6 +2,8 @@
 import { Image } from "astro:assets";
 import PresentationCard from "../components/PresentationCard.astro";
 import StreamingPlatformsLinks from "../components/StreamingPlatformsLinks.astro";
+
+export const prerender = true;
 ---
 
 <main class="max-w-xl m-auto p-6">
@@ -20,5 +22,5 @@ import StreamingPlatformsLinks from "../components/StreamingPlatformsLinks.astro
   </div>
 
   <PresentationCard />
-  <StreamingPlatformsLinks />
+  <StreamingPlatformsLinks server:defer />
 </main>

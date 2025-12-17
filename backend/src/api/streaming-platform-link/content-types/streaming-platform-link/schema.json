@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "streaming_platform_links",
+  "info": {
+    "singularName": "streaming-platform-link",
+    "pluralName": "streaming-platform-links",
+    "displayName": "Streaming Platform Link"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "url": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}

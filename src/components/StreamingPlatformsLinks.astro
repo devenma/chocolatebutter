@@ -1,17 +1,31 @@
 ---
+import { getStrapiData, getStreamingPlatforms } from "../utils/strapi";
+import svgLoader from "../utils/svgLoader.js";
 import { getCollection } from "astro:content";
-import { getSvgContent } from "../utils/svgLoader.js";
+const BASE_URL = process.env.STRAPI_BASE_URL || "http://localhost:1337";
 
-const streamingPlatforms = await getCollection("streamingPlatforms");
+// Obtener datos desde Strapi
+const strapiData = await getStreamingPlatforms();
+const streamingPlatforms =
+  strapiData?.data || (await getCollection("streamingPlatforms"));
+
+export const prerender = false;
 ---
 
 <section class="mt-8">
   <ul>
     {
-      streamingPlatforms.map((platform) => {
-        const { data } = platform;
-        const { title, url, img } = data;
-        const svgContent = getSvgContent(img);
+      streamingPlatforms.map((platform: any) => {
+        // Acceder a los atributos de Strapi
+        const title =
+          platform.title || platform.data.title || "Unknown Platform";
+        const url = platform.url || platform.data.url || "#";
+        const icon = platform.icon.url || platform.data.icon || null;
+
+        const svgContent = icon
+          ? svgLoader.getSvgContentFromStrapi(BASE_URL + icon) ||
+            svgLoader.getSvgContent(icon)
+          : null;
 
         return (
           <li>
