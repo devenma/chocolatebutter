@@ -33,9 +33,17 @@ export const prerender = false;
         const url = platform.url || platform.data.url || "#";
         const icon = platform?.icon?.url || platform.data.icon || null;
 
-        const svgContent = icon
-          ? svgLoader.getSvgContentFromStrapi(BASE_URL + icon) ||
-            svgLoader.getSvgContent(icon)
+        // Validar si icon ya posee la BASE_URL (PRD) o no (LOCAL)
+        const iconUrl =
+          icon && (icon.startsWith("http://") || icon.startsWith("https://"))
+            ? icon
+            : icon
+              ? BASE_URL + icon
+              : null;
+
+        const svgContent = iconUrl
+          ? svgLoader.getSvgContentFromStrapi(iconUrl) ||
+            svgLoader.getSvgContent(iconUrl)
           : null;
 
         return (
