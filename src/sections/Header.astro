@@ -1,0 +1,23 @@
+---
+import PresentationCard from "../components/PresentationCard.astro";
+import { Image } from "astro:assets";
+---
+
+<header class="mb-8">
+  <div class="container flex flex-col items-center justify-center gap-8">
+    <div class="flex gap-8 items-center justify-center">
+      <Image
+        src="/ChocolateButter.webp"
+        alt="ChocolateButter Logo"
+        class="rounded-full shadow-lg"
+        width={64}
+        height={64}
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+      <h1 class="text-2xl font-bold">ChocolateButter</h1>
+    </div>
+    <PresentationCard />
+  </div>
+</header>

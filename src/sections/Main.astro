@@ -1,26 +1,13 @@
 ---
-import { Image } from "astro:assets";
-import PresentationCard from "../components/PresentationCard.astro";
 import StreamingPlatformsLinks from "../components/StreamingPlatformsLinks.astro";
+import StreamingPlatformsLinksDynamic from "../components/StreamingPlatformsLinksDynamic.astro";
 
 export const prerender = true;
 ---
 
-<main class="max-w-xl m-auto p-6">
-  <div class="flex gap-8 items-center justify-center">
-    <Image
-      src="/ChocolateButter.webp"
-      alt="ChocolateButter Logo"
-      class="rounded-full shadow-lg"
-      width={64}
-      height={64}
-      loading="eager"
-      decoding="async"
-      fetchpriority="high"
-    />
-    <h1 class="text-2xl font-bold">ChocolateButter</h1>
-  </div>
-
-  <PresentationCard />
-  <StreamingPlatformsLinks server:defer />
+<main class="overflow-auto">
+  <section class="px-6 streaming-platforms-section">
+    <StreamingPlatformsLinks />
+    <StreamingPlatformsLinksDynamic server:defer />
+  </section>
 </main>
