@@ -1,5 +1,29 @@
-// @ts-expect-error - qs is a valid import
-import qs from "qs";
+// Función para convertir objetos a query string (reemplaza qs)
+function stringifyQuery(obj: any, prefix = ""): string {
+  const params = new URLSearchParams();
+
+  const flatten = (current: any, prop: string) => {
+    if (current === null || current === undefined) {
+      return;
+    }
+
+    if (typeof current !== "object") {
+      params.append(prop, String(current));
+    } else if (Array.isArray(current)) {
+      current.forEach((item, i) => {
+        flatten(item, `${prop}[${i}]`);
+      });
+    } else {
+      Object.keys(current).forEach((key) => {
+        const newProp = prop ? `${prop}[${key}]` : key;
+        flatten(current[key], newProp);
+      });
+    }
+  };
+
+  flatten(obj, prefix);
+  return params.toString();
+}
 
 // Compatible con desarrollo (import.meta.env) y Deno (Deno.env.get)
 const getEnv = (key: string, defaultValue: string = ""): string => {
@@ -23,7 +47,7 @@ const STREAMING_PLATFORMS_QUERY = {
 };
 
 export async function getStreamingPlatforms() {
-  const queryString = qs.stringify(STREAMING_PLATFORMS_QUERY);
+  const queryString = stringifyQuery(STREAMING_PLATFORMS_QUERY);
   return getStrapiData(`api/streaming-platform-links?${queryString}`);
 }
 

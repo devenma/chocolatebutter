@@ -3,17 +3,18 @@ import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
 
-import node from '@astrojs/node';
+import deno from '@astrojs/deno';
 
 // https://astro.build/config
 export default defineConfig({
   output: 'server',
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    ssr: {
+      external: ['qs']
+    }
   },
 
-  adapter: node({
-    mode: 'standalone'
-  })
+  adapter: deno()
 });
