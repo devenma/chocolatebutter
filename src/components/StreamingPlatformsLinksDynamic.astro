@@ -1,0 +1,67 @@
+---
+import { getStreamingPlatforms } from "../utils/strapi";
+import svgLoader from "../utils/svgLoader.js";
+
+// Compatible con desarrollo y Deno
+const getEnv = (key: string, defaultValue: string = ""): string => {
+  // @ts-expect-error - Deno is available in Deno runtime
+  if (typeof Deno !== "undefined") {
+    // @ts-expect-error - Deno.env is available in Deno runtime
+    return Deno.env.get(key) || defaultValue;
+  }
+  return (import.meta.env as Record<string, string>)[key] || defaultValue;
+};
+
+const BASE_URL = getEnv("PUBLIC_STRAPI_API_URL", "http://localhost:1337");
+
+// Obtener datos desde Strapi
+const strapiData = await getStreamingPlatforms().catch(() => null);
+const streamingPlatforms = strapiData?.data || Array(0);
+
+export const prerender = false;
+---
+
+{
+  streamingPlatforms.length > 0 && (
+    <ul
+      id="streaming-platforms-dynamic"
+      class="streaming-platforms-list"
+      style="display: none;"
+    >
+      {streamingPlatforms.map((platform: any) => {
+        // Acceder a los atributos de Strapi
+        const { title, url, icon: { url: iconUrl } = {} } = platform;
+
+        // Validar si icon ya posee la BASE_URL (PRD) o no (LOCAL)
+        const iconUrlFinal =
+          iconUrl &&
+          (iconUrl.startsWith("http://") || iconUrl.startsWith("https://"))
+            ? iconUrl
+            : iconUrl
+              ? BASE_URL + iconUrl
+              : null;
+
+        const svgContent = iconUrlFinal
+          ? svgLoader.getSvgContentFromStrapi(iconUrlFinal)
+          : null;
+
+        return (
+          <li data-platform-id={title}>
+            <a
+              href={url}
+              target="_blank"
+              class="w-full justify-center font-semibold not-hover:text-white hover:text-indigo-600 hover:scale-105 hover:shadow-lg shadow-sm relative flex items-center px-4 py-3 mb-3 bg-neutral-900/10 border border-white/10 hover:border-transparent rounded-2xl hover:bg-neutral-950/50 cursor-pointer transition"
+            >
+              {svgContent ? (
+                <div set:html={svgContent} class="streaming-platform-icon" />
+              ) : (
+                <span class="absolute inline-block left-4 text-sm">📌</span>
+              )}
+              <span class="text-lg font-medium">{title}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  )
+}

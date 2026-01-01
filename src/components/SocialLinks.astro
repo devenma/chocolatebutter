@@ -4,7 +4,9 @@ const socialLinks = await getCollection("socialLinks");
 import { getSvgContent } from "../utils/svgLoader.js";
 ---
 
-<ul class="w-full justify-center flex items-center gap-8 mb-4">
+<ul
+  class="w-full justify-center max-md:gap-8 flex items-center md:justify-between py-6"
+>
   {
     socialLinks.map((link) => {
       const { data } = link;

@@ -4,7 +4,7 @@ const streamingPlatforms = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
-    img: z.string(),
+    icon: z.string(),
     url: z.string().url(),
     description: z.string(),
   }),
