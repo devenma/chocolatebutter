@@ -1,6 +1,9 @@
 ---
 import BackgroundOverlay from "../components/BackgroundOverlay.astro";
 import "../styles/global.css";
+import BottomSheet from "@devenma/astro-bottomsheet/components";
+import BottomSheetTrigger from "@devenma/astro-bottomsheet/components/trigger";
+import { getSvgContent } from "../utils/svgLoader";
 ---
 
 <!doctype html>
@@ -19,6 +22,51 @@ import "../styles/global.css";
   </head>
   <body class="h-full font-sans bg-neutral-950 text-white md:overflow-hidden">
     <BackgroundOverlay />
+
+    <BottomSheet
+      class="backdrop-blur-2xl"
+      borderColor="rgba(152, 16, 250, 0.2)"
+      textColor="oklch(90.2% 0.063 306.703)"
+      baseColor="rgba(60, 3, 102, 0.2)"
+      sections={2}
+      options={{
+        closeOnOverlayClick: true,
+      }}
+    />
+    <BottomSheetTrigger title="Project Info" class="fixed top-4 right-4">
+      <div slot="trigger">
+        <button
+          class="hover:scale-110 cursor-pointer transition-transform border border-purple-500/10 p-2 rounded-full bg-purple-900/10 backdrop-blur-lg flex items-center gap-2"
+          set:html={getSvgContent("info-solid-full.svg")}
+        />
+      </div>
+      <div data-section="0" class="p-4">
+        <h3 class="text-lg font-semibold mb-2">Development</h3>
+        <p class="text-purple-400/60">
+          This project are developed by Enmanuel Rosales Leon with Astro,
+          Tailwind CSS, TypeScript and deployed on Deno Deploy.
+        </p>
+      </div>
+      <div data-section="1" class="p-4">
+        <h3 class="text-lg font-semibold mb-2">Repository</h3>
+        <p class="text-purple-400/60">
+          The source code is available on
+          <a
+            href="https://github.com/devenma/chocolatebutter"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="underline hover:text-purple-400/80 transition-colors"
+          >
+            GitHub
+          </a>.
+        </p>
+        <p class="text-purple-400/60">
+          Feel free to contribute or report issues and also use the code as
+          reference under the MIT License.
+        </p>
+      </div>
+    </BottomSheetTrigger>
+
     <div
       class="w-full max-w-xl mx-auto max-md:py-8 py-4 2xl:py-20 px-6 h-full grid grid-rows-[auto_1fr_auto]"
     >

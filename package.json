@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@deno/astro-adapter": "^0.3.2",
+    "@devenma/astro-bottomsheet": "^1.0.1",
     "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.16.5",
     "tailwindcss": "^4.1.17"
