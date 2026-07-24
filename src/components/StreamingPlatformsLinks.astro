@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import svgLoader from "../utils/svgLoader.js";
+import svgLoader from "@app/utils/svgLoader";
 
 // Cargar contenido estático desde las colecciones
 const streamingPlatforms = await getCollection("streamingPlatforms");

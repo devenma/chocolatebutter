@@ -1,6 +1,5 @@
 ---
-import StreamingPlatformsLinks from "../components/StreamingPlatformsLinks.astro";
-import StreamingPlatformsLinksDynamic from "../components/StreamingPlatformsLinksDynamic.astro";
+import StreamingPlatformsLinks from "@app/components/StreamingPlatformsLinks.astro";
 
 export const prerender = true;
 ---
@@ -8,6 +7,5 @@ export const prerender = true;
 <main class="md:overflow-auto">
   <section class="px-6 streaming-platforms-section">
     <StreamingPlatformsLinks />
-    <StreamingPlatformsLinksDynamic server:defer />
   </section>
 </main>
