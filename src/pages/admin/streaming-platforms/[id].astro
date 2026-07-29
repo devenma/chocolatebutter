@@ -1,0 +1,66 @@
+---
+import AdminLayout from "@app/layouts/AdminLayout.astro";
+import { getKv } from "@app/lib/db";
+
+const { id } = Astro.params;
+const kv = await getKv();
+const entry = await kv.get(["links", "streamingPlatforms", id!]);
+const platform = entry.value as {
+  id: string; title: string; icon: string; url: string;
+  description: string; order: number;
+} | null;
+
+if (!platform) {
+  return Astro.redirect("/admin/streaming-platforms");
+}
+---
+
+<AdminLayout title="Edit Streaming Platform" currentSection="streaming-platforms">
+  <div class="max-w-lg">
+    <form method="POST" action="/api/admin/streaming-platforms" class="space-y-4">
+      <input type="hidden" name="_method" value="PUT" />
+      <input type="hidden" name="id" value={platform.id} />
+
+      <div>
+        <label for="title" class="block text-sm font-medium text-neutral-400 mb-1">Title *</label>
+        <input type="text" id="title" name="title" required value={platform.title}
+          class="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors" />
+      </div>
+
+      <div>
+        <label for="url" class="block text-sm font-medium text-neutral-400 mb-1">URL *</label>
+        <input type="url" id="url" name="url" required value={platform.url}
+          class="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors" />
+      </div>
+
+      <div>
+        <label for="icon" class="block text-sm font-medium text-neutral-400 mb-1">Icon path *</label>
+        <input type="text" id="icon" name="icon" required value={platform.icon}
+          class="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors" />
+      </div>
+
+      <div>
+        <label for="description" class="block text-sm font-medium text-neutral-400 mb-1">Description</label>
+        <textarea id="description" name="description" rows={2}
+          class="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors">{platform.description}</textarea>
+      </div>
+
+      <div>
+        <label for="order" class="block text-sm font-medium text-neutral-400 mb-1">Order</label>
+        <input type="number" id="order" name="order" value={platform.order} min="0"
+          class="w-24 px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors" />
+      </div>
+
+      <div class="flex gap-3 pt-2">
+        <button type="submit"
+          class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-medium rounded-lg transition-colors cursor-pointer">
+          Save Changes
+        </button>
+        <a href="/admin/streaming-platforms"
+          class="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 rounded-lg transition-colors">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</AdminLayout>
