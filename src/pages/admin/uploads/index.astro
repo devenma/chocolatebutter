@@ -1,0 +1,181 @@
+---
+import AdminLayout from "@app/layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Uploads" currentSection="uploads">
+  <div class="max-w-4xl">
+    <div class="mb-8 p-6 bg-neutral-900/50 border border-purple-500/10 rounded-xl">
+      <h2 class="text-lg font-semibold mb-4">Upload File</h2>
+      <form id="upload-form" class="space-y-4">
+        <div>
+          <label for="file" class="block text-sm font-medium text-neutral-400 mb-1">
+            Select image (PNG, JPG, WebP, SVG — max 5 MB)
+          </label>
+          <input
+            type="file" id="file" name="file"
+            accept="image/png,image/jpeg,image/webp,image/svg+xml" required
+            class="w-full text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-purple-600 file:text-white hover:file:bg-purple-500 file:cursor-pointer cursor-pointer"
+          />
+        </div>
+        <div class="flex items-center gap-3">
+          <button type="submit" id="upload-btn"
+            class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-medium rounded-lg transition-colors text-sm cursor-pointer disabled:opacity-50"
+          >
+            Upload
+          </button>
+          <span id="upload-message" class="hidden text-sm"></span>
+        </div>
+      </form>
+    </div>
+
+    <div id="file-list">
+      <div class="text-center py-12 text-neutral-500">Loading files...</div>
+    </div>
+  </div>
+</AdminLayout>
+
+<script>
+  async function loadFiles() {
+    const container = document.getElementById("file-list");
+    if (!container) return;
+
+    try {
+      const res = await fetch("/api/admin/uploads");
+      if (!res.ok) throw new Error("Failed to load");
+      const files = await res.json();
+
+      if (files.length === 0) {
+        container.innerHTML =
+          '<div class="text-center py-12 text-neutral-500">No files uploaded yet</div>';
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="overflow-x-auto rounded-lg border border-purple-500/10">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-neutral-900/80 text-neutral-400">
+                <th class="px-4 py-3 text-left font-medium w-14">Preview</th>
+                <th class="px-4 py-3 text-left font-medium">Name</th>
+                <th class="px-4 py-3 text-left font-medium w-20">Size</th>
+                <th class="px-4 py-3 text-left font-medium w-28">Type</th>
+                <th class="px-4 py-3 text-left font-medium w-36">Last Modified</th>
+                <th class="px-4 py-3 text-right font-medium w-16">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-purple-500/10">
+              ${files.map((file) => `
+                <tr class="hover:bg-neutral-900/50 transition-colors">
+                  <td class="px-4 py-3">
+                    ${file.type.startsWith("image/")
+                      ? `<img src="${file.url}" alt="${file.name}" class="w-10 h-10 object-cover rounded" loading="lazy" />`
+                      : `<div class="w-10 h-10 bg-neutral-800 rounded flex items-center justify-center text-neutral-500 text-[10px] font-bold">FILE</div>`
+                    }
+                  </td>
+                  <td class="px-4 py-3 max-w-[240px]">
+                    <a href="${file.url}" target="_blank"
+                      class="block truncate text-purple-400 hover:text-purple-300 hover:underline font-medium"
+                      title="${file.name}"
+                    >${file.name}</a>
+                  </td>
+                  <td class="px-4 py-3 text-neutral-400 whitespace-nowrap">${file.size}</td>
+                  <td class="px-4 py-3 text-neutral-400 text-xs truncate max-w-[120px]" title="${file.type}">${file.type}</td>
+                  <td class="px-4 py-3 text-neutral-400 text-xs whitespace-nowrap">${new Date(file.lastModified).toLocaleString()}</td>
+                  <td class="px-4 py-3 text-right">
+                    <button class="delete-btn text-red-400 hover:text-red-300 transition-colors cursor-pointer text-sm"
+                      data-url="${file.url}"
+                    >Delete</button>
+                  </td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } catch (_err) {
+      const container = document.getElementById("file-list");
+      if (container) {
+        container.innerHTML =
+          '<div class="text-center py-12 text-red-400">Failed to load files</div>';
+      }
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadFiles();
+
+    const form = document.getElementById("upload-form");
+    const btn = document.getElementById("upload-btn");
+    const msg = document.getElementById("upload-message");
+
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fileInput = /** @type {HTMLInputElement} */ (
+        document.getElementById("file")
+      );
+      if (!fileInput?.files?.[0]) return;
+
+      btn.disabled = true;
+      btn.textContent = "Uploading...";
+      msg.classList.add("hidden");
+
+      const fd = new FormData();
+      fd.append("file", fileInput.files[0]);
+
+      try {
+        const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+        const data = await res.json();
+
+        if (!res.ok) {
+          msg.textContent = data.error || "Upload failed";
+          msg.className = "text-sm text-red-400";
+          msg.classList.remove("hidden");
+          return;
+        }
+
+        fileInput.value = "";
+        msg.textContent = "Uploaded successfully";
+        msg.className = "text-sm text-green-400";
+        msg.classList.remove("hidden");
+        loadFiles();
+      } catch (_err) {
+        msg.textContent = "Upload failed";
+        msg.className = "text-sm text-red-400";
+        msg.classList.remove("hidden");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Upload";
+      }
+    });
+
+    document.getElementById("file-list")?.addEventListener("click", async (e) => {
+      const target = /** @type {HTMLElement} */ (e.target);
+      const btn = target.closest(".delete-btn");
+      if (!btn) return;
+
+      const url = /** @type {HTMLElement} */ (btn).dataset.url;
+      if (!url || !confirm("Delete this file?")) return;
+
+      btn.disabled = true;
+      btn.textContent = "Deleting...";
+
+      try {
+        const res = await fetch("/api/admin/uploads", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url }),
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          alert(data.error || "Delete failed");
+          return;
+        }
+
+        loadFiles();
+      } catch (_err) {
+        alert("Delete failed");
+      }
+    });
+  });
+</script>

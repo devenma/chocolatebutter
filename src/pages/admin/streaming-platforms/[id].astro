@@ -35,8 +35,11 @@ if (!platform) {
 
       <div>
         <label for="icon" class="block text-sm font-medium text-neutral-400 mb-1">Icon path *</label>
-        <input type="text" id="icon" name="icon" required value={platform.icon}
-          class="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors" />
+        <div class="flex gap-2 items-start">
+          <input type="text" id="icon" name="icon" required value={platform.icon}
+            class="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors flex-1" />
+          <button type="button" class="file-picker-btn px-3 py-2 bg-neutral-700 hover:bg-neutral-600 text-white text-sm rounded-lg transition-colors cursor-pointer whitespace-nowrap mt-6">Browse</button>
+        </div>
       </div>
 
       <div>
@@ -64,3 +67,11 @@ if (!platform) {
     </form>
   </div>
 </AdminLayout>
+
+<script>
+  import { FilePicker } from "@app/components/admin/FilePicker.client.js";
+  document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("icon");
+    if (input) FilePicker.attach(input, { label: "Icon path" });
+  });
+</script>

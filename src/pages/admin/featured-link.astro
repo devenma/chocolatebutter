@@ -45,11 +45,7 @@ const error = Astro.url.searchParams.get("error");
         <input type="text" id="coverImage" name="coverImage" required value={featured?.coverImage || ""}
           class="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
           placeholder="/uploads/my-cover.jpg" />
-        <p class="text-xs text-neutral-500 mt-1">
-          Upload an image from the
-          <a href="/admin/featured-link" class="text-purple-400 hover:underline">Upload</a> tab,
-          or use an existing path like /ChocolateButter.webp
-        </p>
+
       </div>
 
       <div>
@@ -86,3 +82,11 @@ const error = Astro.url.searchParams.get("error");
     </div>
   </div>
 </AdminLayout>
+
+<script>
+  import { FilePicker } from "@app/components/admin/FilePicker.client.js";
+  document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("coverImage");
+    if (input) FilePicker.attach(input, { label: "Cover Image" });
+  });
+</script>

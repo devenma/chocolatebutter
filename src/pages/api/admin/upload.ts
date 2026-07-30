@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { handleUpload } from "@app/lib/upload";
+import { handleUpload } from "@app/lib/upload.ts";
 
 export const POST: APIRoute = async ({ request }) => {
   const result = await handleUpload(request);
@@ -11,19 +11,8 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  // Return HTML with the URL and a JS snippet to copy it
-  return new Response(
-    `<!DOCTYPE html>
-<html><body>
-  <script>
-    const url = ${JSON.stringify(result.url)};
-    navigator.clipboard?.writeText(url);
-    location.href = "/admin/featured-link?message=Uploaded%3A%20${encodeURIComponent(result.url)}%20(copied%20to%20clipboard)";
-  </script>
-</body></html>`,
-    {
-      status: 201,
-      headers: { "Content-Type": "text/html" },
-    },
-  );
+  return new Response(JSON.stringify({ url: result.url }), {
+    status: 201,
+    headers: { "Content-Type": "application/json" },
+  });
 };

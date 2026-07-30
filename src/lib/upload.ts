@@ -1,4 +1,4 @@
-import { writeFile, mkdir } from "node:fs/promises";
+import { writeFile, mkdir, unlink } from "node:fs/promises";
 import path from "node:path";
 
 const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/webp", "image/svg+xml"];
@@ -59,5 +59,30 @@ export async function handleUpload(
   } catch (err) {
     console.error("Upload error:", err);
     return { error: "Internal server error", status: 500 };
+  }
+}
+
+export async function deleteFile(
+  url: string,
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const filename = path.basename(url);
+    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    const filePath = path.join(uploadDir, filename);
+
+    const resolved = path.resolve(filePath);
+    const resolvedDir = path.resolve(uploadDir);
+    if (!resolved.startsWith(resolvedDir)) {
+      return { success: false, error: "Invalid file path" };
+    }
+
+    await unlink(filePath);
+    return { success: true };
+  } catch (err) {
+    if ((err as { code?: string }).code === "ENOENT") {
+      return { success: false, error: "File not found" };
+    }
+    console.error("Delete error:", err);
+    return { success: false, error: "Internal server error" };
   }
 }
