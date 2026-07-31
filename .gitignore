@@ -26,3 +26,7 @@ pnpm-debug.log*
 .vscode
 
 pnpm-lock.yaml
+
+# generated uploads
+public/uploads/
+data/

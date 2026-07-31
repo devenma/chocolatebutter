@@ -1,12 +1,12 @@
 ---
-import { getCollection } from "astro:content";
+import { getSpotifyArtistLinks, seedIfEmpty } from "@app/lib/publicData";
 
-const spotifyArtistLinks = await getCollection("spotifyArtistLinks");
+await seedIfEmpty();
+const spotifyArtistLinks = await getSpotifyArtistLinks();
 
 const artistLinksHTML = spotifyArtistLinks
   .map((artist, index) => {
-    const { data } = artist;
-    const { title, url } = data;
+    const { title, url } = artist;
     let separator = index < spotifyArtistLinks.length - 1 ? ", " : ".";
     separator = index === spotifyArtistLinks.length - 2 ? " and " : separator;
     return `<a class="inline-block font-semibold" href="${url}" target="_blank">${title}</a>${separator}`;
@@ -15,12 +15,17 @@ const artistLinksHTML = spotifyArtistLinks
 ---
 
 <article
-  class="max-sm:text-sm text-pretty text-base 2xl:text-lg w-full bg-linear-to-br from-purple-600/5 to-fuchsia-600/5 border border-purple-500/30 p-4 shadow-md rounded-lg"
+  class="max-sm:text-sm text-pretty text-base 2xl:text-lg w-full bg-linear-to-br from-purple-600/5 to-fuchsia-600/5 border border-purple-500/30 p-4 shadow-md rounded-2xl"
 >
   <p>Hi! I'm ChocolateButter.</p>
   <p>
-    Just a web developer that try to be a lofi artist in my free time. I'm very
-    inspired by artist like <Fragment set:html={artistLinksHTML} />
+    Just a web developer that try to be a lofi artist in my free time.{
+      artistLinksHTML && (
+        <Fragment
+          set:html={` I'm very inspired by artist like ${artistLinksHTML}`}
+        />
+      )
+    }
   </p>
   <p>
     I'm trying to express my deepest feelings in my beats, hope you like it.

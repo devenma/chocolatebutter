@@ -10,7 +10,10 @@ export default defineConfig({
   output: 'server',
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    server: {
+      allowedHosts: ['lofi--local.chocolatebutter.deno.net'],
+    }
   },
 
   adapter: deno()

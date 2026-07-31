@@ -1,6 +1,7 @@
 ---
-import PresentationCard from "../components/PresentationCard.astro";
+import PresentationCard from "@app/components/PresentationCard.astro";
 import { Image } from "astro:assets";
+import FeaturedLink from "@app/components/FeaturedLink.astro";
 ---
 
 <header class="mb-8">
@@ -19,5 +20,6 @@ import { Image } from "astro:assets";
       <h1 class="text-2xl font-bold">ChocolateButter</h1>
     </div>
     <PresentationCard />
+    <FeaturedLink />
   </div>
 </header>

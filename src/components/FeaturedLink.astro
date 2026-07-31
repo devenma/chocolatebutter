@@ -1,0 +1,31 @@
+---
+import { getFeaturedLink } from "@app/lib/publicData";
+
+const featured = await getFeaturedLink();
+
+if (!featured) {
+  return;
+}
+---
+
+<a
+  href={featured.url}
+  target="_blank"
+  class="group block w-full overflow-hidden rounded-2xl border border-white/10 bg-neutral-900/10 shadow-sm hover:shadow-lg hover:border-purple-500/40 hover:scale-[1.01] transition mb-3"
+>
+  {featured.coverImage && (
+    <img
+      src={featured.coverImage}
+      alt={featured.title}
+      class="w-full h-40 object-cover"
+    />
+  )}
+  <div class="px-4 py-4">
+    <h2 class="text-lg font-semibold text-white group-hover:text-purple-400 transition-colors">
+      {featured.title}
+    </h2>
+    {featured.description && (
+      <p class="text-sm text-neutral-400 mt-1">{featured.description}</p>
+    )}
+  </div>
+</a>

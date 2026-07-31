@@ -1,9 +1,9 @@
 ---
-import BackgroundOverlay from "../components/BackgroundOverlay.astro";
-import "../styles/global.css";
+import BackgroundOverlay from "@app/components/BackgroundOverlay.astro";
+import "@app/styles/global.css";
 import BottomSheet from "@devenma/astro-bottomsheet/components";
 import BottomSheetTrigger from "@devenma/astro-bottomsheet/components/trigger";
-import { getSvgContent } from "../utils/svgLoader";
+import { getSvgContent } from "@app/utils/svgLoader";
 ---
 
 <!doctype html>
@@ -20,7 +20,7 @@ import { getSvgContent } from "../utils/svgLoader";
     />
     <title>ChocolateButter</title>
   </head>
-  <body class="h-full font-sans bg-neutral-950 text-white md:overflow-hidden">
+  <body class="h-full font-sans bg-neutral-950 text-white">
     <BackgroundOverlay />
 
     <BottomSheet
@@ -72,9 +72,5 @@ import { getSvgContent } from "../utils/svgLoader";
     >
       <slot />
     </div>
-
-    <script>
-      import "../utils/streamingPlatformsLoader";
-    </script>
   </body>
 </html>

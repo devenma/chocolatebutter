@@ -1,16 +1,23 @@
 ---
-import { getCollection } from "astro:content";
-const socialLinks = await getCollection("socialLinks");
-import { getSvgContent } from "../utils/svgLoader.js";
+import { getSvgContent } from "@app/utils/svgLoader";
+import { getSocialLinks, seedIfEmpty } from "@app/lib/publicData";
+
+function isAbsoluteUrl(value: string) {
+  return /^https?:\/\//i.test(value);
+}
+
+await seedIfEmpty();
+const socialLinks = await getSocialLinks();
 ---
 
 <ul
-  class="w-full justify-center max-md:gap-8 flex items-center md:justify-between py-6"
+  class="w-full justify-center gap-8 md:gap-4 flex items-center md:justify-between"
 >
   {
     socialLinks.map((link) => {
-      const { data } = link;
-      const { url, img, title, alt, width, height } = data;
+      const { url, img, title, alt, width, height } = link;
+
+      const isRemote = img ? isAbsoluteUrl(img) : false;
 
       return (
         <li>
@@ -21,11 +28,21 @@ import { getSvgContent } from "../utils/svgLoader.js";
             class="hover:scale-110 transition-transform max-sm:border max-sm:border-purple-500/10 max-sm:p-2 max-sm:rounded-lg max-sm:bg-purple-900/10 max-sm:backdrop-blur-lg flex items-center gap-2"
           >
             {img ? (
-              <div set:html={getSvgContent(img)} class="inline-block" />
+              isRemote ? (
+                <img
+                  src={img}
+                  alt={alt}
+                  width={width}
+                  height={height}
+                  class="inline-block"
+                />
+              ) : (
+                <div set:html={getSvgContent(img)} class="inline-block" />
+              )
             ) : (
               <span class="text-2xl">🔗</span>
             )}
-            <span class="text-sm font-semibold max-sm:hidden">{alt}</span>
+            <span class="text-sm font-semibold max-sm:hidden">{title}</span>
           </a>
         </li>
       );

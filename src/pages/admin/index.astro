@@ -1,0 +1,76 @@
+---
+import AdminLayout from "@app/layouts/AdminLayout.astro";
+import { getKv } from "@app/lib/db";
+
+const kv = await getKv();
+
+// Count entries per collection
+const [streamingPlatforms, spotifyArtistLinks, socialLinks] = await Promise.all([
+  Array.fromAsync(kv.list({ prefix: ["links", "streamingPlatforms"] })),
+  Array.fromAsync(kv.list({ prefix: ["links", "spotifyArtistLinks"] })),
+  Array.fromAsync(kv.list({ prefix: ["links", "socialLinks"] })),
+]);
+
+const featuredLink = await kv.get(["meta", "featuredLink"]);
+const hasFeaturedLink = featuredLink.value !== null;
+
+const resources = [
+  {
+    title: "Streaming Platforms",
+    count: streamingPlatforms.length,
+    href: "/admin/streaming-platforms",
+    description: "Manage music platform links (Spotify, Apple Music, etc.)",
+  },
+  {
+    title: "Spotify Artist Links",
+    count: spotifyArtistLinks.length,
+    href: "/admin/spotify-artist-links",
+    description: "Manage featured artist references",
+  },
+  {
+    title: "Social Links",
+    count: socialLinks.length,
+    href: "/admin/social-links",
+    description: "Manage social media links (Instagram, GitHub, etc.)",
+  },
+  {
+    title: "Featured Link",
+    count: hasFeaturedLink ? 1 : 0,
+    href: "/admin/featured-link",
+    description: "Edit the featured release or project link",
+    featured: hasFeaturedLink,
+  },
+];
+---
+
+<AdminLayout title="Dashboard" currentSection="dashboard">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {resources.map((resource) => (
+      <a
+        href={resource.href}
+        class="block bg-neutral-900/50 border border-purple-500/10 rounded-xl p-6 hover:border-purple-500/30 hover:bg-neutral-900/80 transition-all group"
+      >
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-white group-hover:text-purple-300 transition-colors">
+            {resource.title}
+          </h3>
+          <span class="text-sm text-neutral-500 bg-neutral-800 px-2 py-0.5 rounded-full">
+            {resource.count}
+          </span>
+        </div>
+        <p class="text-sm text-neutral-400">{resource.description}</p>
+        {"featured" in resource && (
+          <div class="mt-2">
+            <span class={`text-xs px-2 py-0.5 rounded-full ${
+              resource.featured
+                ? "bg-green-900/30 text-green-400 border border-green-500/20"
+                : "bg-neutral-800 text-neutral-500"
+            }`}>
+              {resource.featured ? "Active" : "Not set"}
+            </span>
+          </div>
+        )}
+      </a>
+    ))}
+  </div>
+</AdminLayout>
