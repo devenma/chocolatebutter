@@ -16,6 +16,14 @@
       "sessions": 1,
       "memories": 7,
       "prompts": 3
+    },
+    {
+      "id": "5726c93e",
+      "created_by": "deverosales",
+      "created_at": "2026-07-31T19:01:22Z",
+      "sessions": 2,
+      "memories": 7,
+      "prompts": 11
     }
   ]
 }
