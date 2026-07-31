@@ -3,10 +3,13 @@
     "org": "chocolatebutter",
     "app": "lofi"
   },
-  "allowScripts": ["npm:esbuild@0.25.12", "npm:esbuild@0.27.7", "npm:sharp@0.34.5"],
+  "allowScripts": [
+    "npm:esbuild@0.25.12",
+    "npm:esbuild@0.27.7",
+    "npm:sharp@0.34.5"
+  ],
   "tasks": {
-    "dev": "astro dev",
-    "build": "astro build"
+    "dev": "deno run -A --unstable-kv --tunnel npm:astro dev",
+    "build": "deno run -A --unstable-kv npm:astro build"
   }
 }
-

@@ -1,7 +1,12 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
+import { glob } from "astro/loaders";
 
 const streamingPlatforms = defineCollection({
-  type: "content",
+  loader: glob({
+    pattern: "**/[^_]*.{md,mdx}",
+    base: "./src/content/streamingPlatforms",
+  }),
   schema: z.object({
     title: z.string(),
     icon: z.string(),
@@ -11,7 +16,10 @@ const streamingPlatforms = defineCollection({
 });
 
 const spotifyArtistLinks = defineCollection({
-  type: "content",
+  loader: glob({
+    pattern: "**/[^_]*.{md,mdx}",
+    base: "./src/content/spotifyArtistLinks",
+  }),
   schema: z.object({
     title: z.string(),
     img: z.string(),
@@ -21,7 +29,10 @@ const spotifyArtistLinks = defineCollection({
 });
 
 const socialLinks = defineCollection({
-  type: "content",
+  loader: glob({
+    pattern: "**/[^_]*.{md,mdx}",
+    base: "./src/content/socialLinks",
+  }),
   schema: z.object({
     url: z.string().url(),
     img: z.string(),
