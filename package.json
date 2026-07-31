@@ -9,6 +9,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1098.0",
     "@deno/astro-adapter": "0.6.0",
     "@devenma/astro-bottomsheet": "1.0.1",
     "@tailwindcss/vite": "4.3.3",

@@ -1,5 +1,4 @@
-import { writeFile, mkdir, unlink } from "node:fs/promises";
-import path from "node:path";
+import { getStorage } from "@app/lib/storage.ts";
 
 const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/webp", "image/svg+xml"];
 const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
@@ -47,15 +46,11 @@ export async function handleUpload(
 
     const ext = EXT_MAP[file.type];
     const filename = `${crypto.randomUUID()}.${ext}`;
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    const filePath = path.join(uploadDir, filename);
 
-    await mkdir(uploadDir, { recursive: true });
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const { url } = await getStorage().upload(bytes, filename, file.type);
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-    await writeFile(filePath, buffer);
-
-    return { url: `/uploads/${filename}` };
+    return { url };
   } catch (err) {
     console.error("Upload error:", err);
     return { error: "Internal server error", status: 500 };
@@ -65,24 +60,5 @@ export async function handleUpload(
 export async function deleteFile(
   url: string,
 ): Promise<{ success: boolean; error?: string }> {
-  try {
-    const filename = path.basename(url);
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    const filePath = path.join(uploadDir, filename);
-
-    const resolved = path.resolve(filePath);
-    const resolvedDir = path.resolve(uploadDir);
-    if (!resolved.startsWith(resolvedDir)) {
-      return { success: false, error: "Invalid file path" };
-    }
-
-    await unlink(filePath);
-    return { success: true };
-  } catch (err) {
-    if ((err as { code?: string }).code === "ENOENT") {
-      return { success: false, error: "File not found" };
-    }
-    console.error("Delete error:", err);
-    return { success: false, error: "Internal server error" };
-  }
+  return getStorage().deleteByUrl(url);
 }
