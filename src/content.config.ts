@@ -10,7 +10,7 @@ const streamingPlatforms = defineCollection({
   schema: z.object({
     title: z.string(),
     icon: z.string(),
-    url: z.string().url(),
+    url: z.url(),
     description: z.string(),
   }),
 });
@@ -23,7 +23,7 @@ const spotifyArtistLinks = defineCollection({
   schema: z.object({
     title: z.string(),
     img: z.string(),
-    url: z.string().url(),
+    url: z.url(),
     description: z.string(),
   }),
 });
@@ -34,7 +34,7 @@ const socialLinks = defineCollection({
     base: "./src/content/socialLinks",
   }),
   schema: z.object({
-    url: z.string().url(),
+    url: z.url(),
     img: z.string(),
     title: z.string(),
     alt: z.string(),

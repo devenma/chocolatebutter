@@ -16,36 +16,7 @@ export class FilePicker {
 
   setupButton() {
     const parent = this.inputEl.parentElement;
-    let btn = parent?.querySelector(".file-picker-btn");
-
-    if (!btn) {
-      const wrapper = document.createElement("div");
-      wrapper.style.cssText = "display: flex; gap: 0.5rem; align-items: flex-start;";
-      parent.insertBefore(wrapper, this.inputEl);
-      wrapper.appendChild(this.inputEl);
-      this.inputEl.style.flex = "1";
-
-      btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "file-picker-btn";
-      btn.textContent = "Browse";
-      Object.assign(btn.style, {
-        padding: "0.5rem 0.75rem",
-        backgroundColor: "#404040",
-        color: "#fff",
-        fontSize: "0.875rem",
-        borderRadius: "0.5rem",
-        cursor: "pointer",
-        whiteSpace: "nowrap",
-        marginTop: "1.5rem",
-        border: "none",
-        transition: "background-color 0.2s",
-      });
-      btn.addEventListener("mouseenter", () => { btn.style.backgroundColor = "#525252"; });
-      btn.addEventListener("mouseleave", () => { btn.style.backgroundColor = "#404040"; });
-
-      wrapper.appendChild(btn);
-    }
+    const btn = parent?.querySelector(".file-picker-btn");
 
     btn.addEventListener("click", () => this.open());
     this.btn = btn;

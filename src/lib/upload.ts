@@ -1,6 +1,11 @@
 import { getStorage } from "@app/lib/storage.ts";
 
-const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/webp", "image/svg+xml"];
+const ALLOWED_TYPES = [
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "image/svg+xml",
+];
 const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
 
 const EXT_MAP: Record<string, string> = {
@@ -60,5 +65,5 @@ export async function handleUpload(
 export async function deleteFile(
   url: string,
 ): Promise<{ success: boolean; error?: string }> {
-  return getStorage().deleteByUrl(url);
+  return await getStorage().deleteByUrl(url);
 }

@@ -1,20 +1,23 @@
 ---
-import { getCollection } from "astro:content";
 import svgLoader from "@app/utils/svgLoader";
+import { getStreamingPlatforms, seedIfEmpty } from "@app/lib/publicData";
 
-// Cargar contenido estático desde las colecciones
-const streamingPlatforms = await getCollection("streamingPlatforms");
+function isAbsoluteUrl(value: string) {
+  return /^https?:\/\//i.test(value);
+}
 
-export const prerender = false;
+await seedIfEmpty();
+const streamingPlatforms = await getStreamingPlatforms();
 ---
 
 <ul id="streaming-platforms-static">
   {
-    streamingPlatforms.map((platform: any) => {
-      // Acceder a los atributos de la colección
-      const { title, url, icon } = platform.data;
+    streamingPlatforms.map((platform) => {
+      const { title, url, icon } = platform;
 
-      const svgContent = icon ? svgLoader.getSvgContent(icon) : null;
+      const isRemote = icon ? isAbsoluteUrl(icon) : false;
+      const svgContent =
+        !isRemote && icon ? svgLoader.getSvgContent(icon) : null;
 
       return (
         <li data-platform-id={title}>
@@ -25,6 +28,12 @@ export const prerender = false;
           >
             {svgContent ? (
               <div set:html={svgContent} class="streaming-platform-icon" />
+            ) : isRemote ? (
+              <img
+                src={icon}
+                alt={title}
+                class="streaming-platform-icon absolute inline-block left-4 size-6 object-contain"
+              />
             ) : (
               <span class="absolute inline-block left-4 text-sm">📌</span>
             )}

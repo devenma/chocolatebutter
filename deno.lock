@@ -1,18 +1,12 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@deno/installer-shell-setup@*": "0.3.4",
     "npm:@aws-sdk/client-s3@^3.1098.0": "3.1098.0",
     "npm:@deno/astro-adapter@0.6.0": "0.6.0_astro@7.1.6__@emnapi+core@2.0.0-alpha.3__@emnapi+runtime@1.11.3_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1.11.3",
     "npm:@devenma/astro-bottomsheet@1.0.1": "1.0.1_astro@7.1.6__@emnapi+core@2.0.0-alpha.3__@emnapi+runtime@1.11.3_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1.11.3",
     "npm:@tailwindcss/vite@4.3.3": "4.3.3_vite@8.2.0__esbuild@0.28.1",
     "npm:astro@7.1.6": "7.1.6_@emnapi+core@2.0.0-alpha.3_@emnapi+runtime@1.11.3",
     "npm:tailwindcss@4.3.3": "4.3.3"
-  },
-  "jsr": {
-    "@deno/installer-shell-setup@0.3.4": {
-      "integrity": "48665d1a737d487cce6874bc97bba70a5aeffa7053aca3f60df93c6fab8963b4"
-    }
   },
   "npm": {
     "@astrojs/compiler-binding-darwin-arm64@0.3.2": {
@@ -804,6 +798,7 @@
       "integrity": "sha512-KjZdi8Q1wh89gsVmghvbrMgWl6ZWmRmHV6wjB7/g4Zf0dyO+hH3neZUtuDNPO00qq5YE5RITVWvrIZKRaAmzGQ==",
       "dependencies": [
         "@emnapi/core@2.0.0-alpha.3",
+        "@emnapi/runtime@1.11.3",
         "@tybys/wasm-util"
       ]
     },

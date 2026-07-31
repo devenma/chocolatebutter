@@ -20,7 +20,7 @@ import { getSvgContent } from "@app/utils/svgLoader";
     />
     <title>ChocolateButter</title>
   </head>
-  <body class="h-full font-sans bg-neutral-950 text-white md:overflow-hidden">
+  <body class="h-full font-sans bg-neutral-950 text-white">
     <BackgroundOverlay />
 
     <BottomSheet
@@ -72,9 +72,5 @@ import { getSvgContent } from "@app/utils/svgLoader";
     >
       <slot />
     </div>
-
-    <script>
-      import "../utils/streamingPlatformsLoader";
-    </script>
   </body>
 </html>

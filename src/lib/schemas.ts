@@ -1,10 +1,10 @@
-import { z } from "astro:content";
+import { z } from "astro/zod";
 
 export const StreamingPlatformSchema = z.object({
   id: z.string(),
   title: z.string(),
   icon: z.string(),
-  url: z.string().url(),
+  url: z.url(),
   description: z.string(),
   order: z.number().default(0),
 });
@@ -13,14 +13,14 @@ export const SpotifyArtistLinkSchema = z.object({
   id: z.string(),
   title: z.string(),
   img: z.string(),
-  url: z.string().url(),
+  url: z.url(),
   description: z.string(),
   order: z.number().default(0),
 });
 
 export const SocialLinkSchema = z.object({
   id: z.string(),
-  url: z.string().url(),
+  url: z.url(),
   img: z.string(),
   title: z.string(),
   alt: z.string(),
@@ -31,7 +31,7 @@ export const SocialLinkSchema = z.object({
 
 export const FeaturedLinkSchema = z.object({
   title: z.string(),
-  url: z.string().url(),
+  url: z.url(),
   coverImage: z.string(),
   description: z.string(),
 });
