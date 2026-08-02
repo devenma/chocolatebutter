@@ -16,8 +16,7 @@ const streamingPlatforms = await getStreamingPlatforms();
       const { title, url, icon } = platform;
 
       const isRemote = icon ? isAbsoluteUrl(icon) : false;
-      const svgContent =
-        !isRemote && icon ? svgLoader.getSvgContent(icon) : null;
+      const svgContent = icon ? svgLoader.getSvgContent(icon) : null;
 
       return (
         <li data-platform-id={title}>
