@@ -11,7 +11,7 @@ export function getSvgContent(imagePath: string) {
   }
 }
 
-export async function getSvgContentFromStrapi(url: string) {
+export async function getExternalSvgContent(url: string) {
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -24,4 +24,4 @@ export async function getSvgContentFromStrapi(url: string) {
   }
 }
 
-export default { getSvgContent, getSvgContentFromStrapi };
+export default { getSvgContent, geExternaltSvgContent };
