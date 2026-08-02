@@ -24,4 +24,4 @@ export async function getExternalSvgContent(url: string) {
   }
 }
 
-export default { getSvgContent, geExternaltSvgContent };
+export default { getSvgContent, getExternaltSvgContent };
