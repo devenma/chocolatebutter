@@ -1,18 +1,15 @@
 import { defineMiddleware } from "astro:middleware";
-import { verifyCookie, getCookieName } from "@app/lib/auth";
+import { verifyCookie, getCookieName } from "@app/lib/auth.ts";
 
 // Paths that bypass auth
 const PUBLIC_ADMIN_PATHS = ["/admin/login", "/api/admin/login"];
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  const { request, cookies, redirect, url } = context;
+  const { cookies, redirect, url } = context;
   const pathname = url.pathname;
 
   // Only guard /admin/* and /api/admin/* paths
-  if (
-    !pathname.startsWith("/admin") &&
-    !pathname.startsWith("/api/admin")
-  ) {
+  if (!pathname.startsWith("/admin") && !pathname.startsWith("/api/admin")) {
     return next();
   }
 

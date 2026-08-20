@@ -1,5 +1,6 @@
 ---
-import { getSpotifyArtistLinks, seedIfEmpty } from "@app/lib/publicData";
+import { getSpotifyArtistLinks, seedIfEmpty } from "@app/lib/publicData.ts";
+import { Image } from "astro:assets";
 
 await seedIfEmpty();
 const spotifyArtistLinks = await getSpotifyArtistLinks();
@@ -15,21 +16,33 @@ const artistLinksHTML = spotifyArtistLinks
 ---
 
 <article
-  class="max-sm:text-sm text-pretty text-base 2xl:text-lg w-full bg-linear-to-br from-purple-600/5 to-fuchsia-600/5 border border-purple-500/30 p-4 shadow-md rounded-2xl"
+  class="max-sm:text-sm flex-2 flex max-md:flex-col items-center gap-4 text-pretty text-base 2xl:text-lg w-full bg-linear-to-br from-purple-600/5 to-fuchsia-600/5 border border-purple-500/30 p-4 shadow-md rounded-2xl"
 >
-  <p>Hi! I'm ChocolateButter.</p>
-  <p>
-    Just a web developer that try to be a lofi artist in my free time.{
-      artistLinksHTML && (
-        <Fragment
-          set:html={` I'm very inspired by artist like ${artistLinksHTML}`}
-        />
-      )
-    }
-  </p>
-  <p>
-    I'm trying to express my deepest feelings in my beats, hope you like it.
-    Thank's for passed here, really apreciate it.
-  </p>
-  <span class="block w-full text-right">~ eating chocolate 🍫 ~</span>
+  <Image
+    src="/ChocolateButter.webp"
+    alt="ChocolateButter Logo"
+    class="rounded-full shadow-lg max-md:size-16"
+    width={200}
+    height={200}
+    loading="eager"
+    decoding="async"
+    fetchpriority="high"
+  />
+  <div>
+    <p>Hi! I'm ChocolateButter.</p>
+    <p>
+      Just a web developer that try to be a lofi artist in my free time.{
+        artistLinksHTML && (
+          <Fragment
+            set:html={` I'm very inspired by artist like ${artistLinksHTML}`}
+          />
+        )
+      }
+    </p>
+    <p>
+      I'm trying to express my deepest feelings in my beats, hope you like it.
+      Thank's for passed here, really apreciate it.
+    </p>
+    <span class="block w-full text-right">~ eating chocolate 🍫 ~</span>
+  </div>
 </article>
