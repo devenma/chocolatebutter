@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-display: swap;
+  font-family: "Hanken Grotesk";
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("../fonts/Hanken_Grotesk/HankenGrotesk-VariableFont_wght.ttf");
+}
+
 @theme {
   --animate-cb-gradient-move: cb-gradient-move 20s ease infinite;
 
@@ -14,6 +22,10 @@
       background-position: 0% 50%;
     }
   }
+}
+
+body {
+  font-family: "Hanken Grotesk";
 }
 
 @layer base {
@@ -51,7 +63,7 @@
   a {
     @apply text-purple-400 hover:text-purple-600 transition-colors duration-200;
     .streaming-platform-icon {
-      @apply absolute inline-block left-4 text-indigo-400/60;
+      @apply inline-block left-4 text-indigo-400/60;
     }
     &:hover {
       .streaming-platform-icon {
@@ -62,5 +74,9 @@
 
   svg {
     @apply inline-block align-middle fill-current transition-colors duration-200 text-shadow-sm size-8;
+  }
+
+  #streamingPlatforms {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
 }
