@@ -1,8 +1,8 @@
 ---
 title: GitHub
-img: /github-brands-solid-full.svg
+alt: devenma
 url: https://github.com/devenma
-alt: "devenma"
+img: /github-brands-solid-full.svg
 width: 32
 height: 32
 ---
