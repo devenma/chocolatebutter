@@ -1,46 +1,36 @@
-# Astro Starter Kit: Basics
+# ChocolateButter
+
+Alternativa **self-hosted** a servicios como Linktree para centralizar y compartir enlaces personales o profesionales.
+
+Permite crear una página pública con enlaces a redes sociales, proyectos, sitios web, contacto y cualquier otro recurso relevante, manteniendo el control sobre los datos y el alojamiento.
+
+## Características
+
+- Página personal de enlaces.
+- Enlaces a redes sociales y otros sitios.
+- Alojamiento propio.
+- Configuración y personalización desde el proyecto.
+- Construido con Astro.
+
+## Desarrollo
 
 ```sh
-pnpm create astro@latest -- --template basics
+deno install
+deno run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+La aplicación estará disponible en `http://localhost:4321`.
 
-## 🚀 Project Structure
+## Construcción
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```sh
+deno run build
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+El resultado se generará en `./dist/`.
 
-## 🧞 Commands
+## Vista previa de producción
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                    | Action                                           |
-| :------------------------- | :----------------------------------------------- |
-| `deno install`             | Installs dependencies                            |
-| `deno run dev`             | Starts local dev server at `localhost:4321`      |
-| `deno run build`           | Build your production site to `./dist/`          |
-| `deno run preview`         | Preview your build locally, before deploying     |
-| `deno run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `deno run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```sh
+deno run preview
+```

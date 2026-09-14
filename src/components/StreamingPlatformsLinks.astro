@@ -10,7 +10,7 @@ await seedIfEmpty();
 const streamingPlatforms = await getStreamingPlatforms();
 ---
 
-<div id="streamingPlatforms" class="md:grid gap-4">
+<div id="streamingPlatforms" class="md:grid gap-6">
   {
     streamingPlatforms.map((platform) => {
       const { title, url, icon } = platform;
